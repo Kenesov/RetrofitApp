@@ -2,18 +2,16 @@ package com.example.retrofitapp.ViewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.domin.MainRepository
 import com.example.retrofitapp.models.data.ResultData
-import com.example.retrofitapp.retrofitapp.RetrofitHelper
 import com.example.retrofitapp.retrofitapp.TodoApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
-
-    val repo = MainRepository(RetrofitHelper.getIntstance().create(TodoApi::class.java))
+class MainViewModel(private val repo: MainRepository): ViewModel() {
 
     val getSuccessFlow = MutableSharedFlow<String>()
     val getMessageFlow = MutableSharedFlow<String>()

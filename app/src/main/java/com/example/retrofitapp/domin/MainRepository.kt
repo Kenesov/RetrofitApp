@@ -27,11 +27,11 @@ class MainRepository(private val api: TodoApi) {
     }
 
     suspend fun registerApi(name: String, password: String, phone: String) = flow {
-        val responce = api.registerApi(RegisterRequestBodyData(name, password, phone))
+        val responce =
+            api.registerApi(RegisterRequestBodyData(name, password, phone))
 
         if (responce.isSuccessful) {
-            LocalStorage().token = responce.body()!!.payload.token
-            emit(ResultData.Success(responce.body()!!.message))
+            emit(ResultData.Success(responce.body()!!.payload.token))
         }else{
             emit(ResultData.Message(responce.message()))
         }
@@ -46,7 +46,6 @@ class MainRepository(private val api: TodoApi) {
             emit(ResultData.Message(responce.message()))
         }
     }
-
     suspend fun createTask(description: String, task: String) = flow {
         val responce =
             api.createTask(CreateTasksBodyData(description = description, task = task), "Bearer ${LocalStorage().token}")

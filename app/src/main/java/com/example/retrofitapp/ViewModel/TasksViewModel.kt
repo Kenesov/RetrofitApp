@@ -1,22 +1,19 @@
 package com.example.retrofitapp.ViewModel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retrofitapp.domin.MainRepository
 import com.example.retrofitapp.models.data.ResultData
 import com.example.retrofitapp.models.data.TaskData
-import com.example.retrofitapp.retrofitapp.RetrofitHelper
 import com.example.retrofitapp.retrofitapp.TodoApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import retrofit2.Retrofit
 import retrofit2.create
 
-class TasksViewModel(application: Application): AndroidViewModel(application) {
-  val repo = MainRepository(RetrofitHelper.getIntstance().create(TodoApi::class.java))
+class TasksViewModel(private val repo: MainRepository): ViewModel() {
 
     val getAllTasksFlow = MutableSharedFlow<List<TaskData>>()
     val getMessageFlow = MutableSharedFlow<String>()
@@ -47,7 +44,6 @@ class TasksViewModel(application: Application): AndroidViewModel(application) {
             when(it) {
                 is ResultData.Success ->{
                     getTaskFlow.emit(it.data)
-                    Log.d("RRR",it.data)
                 }
                 is ResultData.Message -> {
                     getTaskMessageFlow.emit(it.message)

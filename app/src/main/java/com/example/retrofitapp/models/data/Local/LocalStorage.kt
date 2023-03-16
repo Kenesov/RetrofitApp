@@ -15,4 +15,8 @@ class LocalStorage {
         var token by StringPreference(prefs, "Nothing to show")
 
         var isLogin by BooleanPreference(prefs, false)
+
+        var isDone by BooleanPreference(prefs, false)
+
+        var desc by StringPreference(prefs, "")
     }

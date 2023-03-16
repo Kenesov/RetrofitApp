@@ -13,33 +13,21 @@
         android:background="@drawable/styleapp">
 
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/linkedin"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"
-            />
-
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/constraint"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintVertical_bias="0.1"
             app:layout_constraintEnd_toEndOf="@id/constraint"
             app:layout_constraintStart_toStartOf="@id/constraint"
-            android:text="Ui Lover Channel"
+            android:text="Retrofit App"
             android:textSize="32sp"
-            android:layout_marginTop="20dp"
             android:textColor="@color/white"
             android:textStyle="bold"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
   <androidx.cardview.widget.CardView
@@ -51,8 +39,8 @@
       app:layout_constraintVertical_bias="0.7"
       android:backgroundTint="@color/teal_200"
       app:cardCornerRadius="30dp"
-      android:elevation="16000dp"
-      app:cardElevation="16000dp"
+      android:elevation="160dp"
+      app:cardElevation="30dp"
       android:layout_width="300dp"
       android:layout_height="400dp">
 
@@ -81,7 +69,8 @@
           android:layout_marginTop="160dp"
           app:startIconDrawable="@drawable/ic_baseline_phone_iphone_24">
 
-          <EditText
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/phone_number"
               android:layout_width="300dp"
               android:backgroundTint="#B3FFFFFF"
               android:layout_height="50dp"
@@ -105,7 +94,8 @@
 
           >
 
-          <EditText
+          <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/password"
               android:layout_width="300dp"
               android:layout_height="50dp"
               android:backgroundTint="#B3FFFFFF"
@@ -134,7 +124,7 @@
           android:id="@+id/next_reg"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Sign in"
+          android:text="Sign up"
           android:textSize="18dp"
           android:layout_gravity="center_horizontal"
           android:layout_marginTop="360dp"/>

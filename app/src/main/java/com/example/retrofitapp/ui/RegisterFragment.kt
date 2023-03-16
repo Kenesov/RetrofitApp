@@ -14,27 +14,24 @@ import com.example.retrofitapp.databinding.RegisterfragmentBinding
 import com.example.retrofitapp.models.data.Local.LocalStorage
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment: Fragment(R.layout.registerfragment) {
 
     private lateinit var binding: RegisterfragmentBinding
-    private lateinit var viewModel: MainViewModel
+
+    private val viewModel by viewModel<MainViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = RegisterfragmentBinding.bind(view)
 
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        )[MainViewModel::class.java]
-
         initObservers()
 
         binding.apply {
             btnBackLogin.setOnClickListener {
-             findNavController().popBackStack()
+                findNavController().popBackStack()
             }
             next.setOnClickListener {
                 if (nameReg.text.toString().isNotEmpty() && phoneReg.text.toString()
@@ -47,21 +44,24 @@ class RegisterFragment: Fragment(R.layout.registerfragment) {
                             phone = phoneReg.text.toString()
                         )
                     }
-                    findNavController().navigate(
-                        R.id.action_registerFragment_to_secondFragment
-                    )
                 } else {
-                    Toast.makeText(requireContext(), "Toltirin", Toast.LENGTH_SHORT).show()
+                  Toast.makeText(requireContext(), "Toltirin", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-            }
 
-private fun initObservers() {
-    viewModel.getSuccessFlow.onEach {
-        Log.w("TTTT", it)
-        Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-    }.launchIn(lifecycleScope)
-}
+    }
+    fun initObservers() {
+        viewModel.getSuccessFlow.onEach {
+            LocalStorage().token = it
+            LocalStorage().isLogin = true
+            LocalStorage().isDone = false
+            findNavController().navigate(
+                R.id.action_registerFragment_to_secondFragment
+            )
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+
+        }.launchIn(lifecycleScope)
+    }
 }

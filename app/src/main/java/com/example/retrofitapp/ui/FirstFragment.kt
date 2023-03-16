@@ -13,57 +13,49 @@ import com.example.retrofitapp.databinding.FirstfragmentBinding
 import com.example.retrofitapp.models.data.Local.LocalStorage
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FirstFragment:Fragment(R.layout.firstfragment) {
    private lateinit var binding: FirstfragmentBinding
-   private lateinit var viewModel: MainViewModel
 
+   private val viewModel by viewModel<MainViewModel>()
    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
       super.onViewCreated(view, savedInstanceState)
       binding = FirstfragmentBinding.bind(view)
 
-      viewModel = ViewModelProvider(
-         requireActivity(),
-         ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-      )[MainViewModel::class.java]
-
-
       initObservers()
 
       binding.apply {
-
-         nextPage.setOnClickListener {
-            val password = loginPassword.toString()
-            val phone = loginGmail.toString()
-            if (password.isNotEmpty() && phone.isNotEmpty()) {
-               lifecycleScope.launchWhenResumed {
-                  viewModel.isLogin(phone, password)
-               }
-               findNavController().navigate(
-                  R.id.action_firstFragment_to_secondFragment
-               )
-            } else {
-               Toast.makeText(requireContext(), "Login ya Parol qate", Toast.LENGTH_SHORT).show()
-            }
-         }
          nextReg.setOnClickListener {
             findNavController().navigate(
-               R.id.action_firstFragment_to_registerFragment
+               FirstFragmentDirections.actionFirstFragmentToRegisterFragment()
             )
+         }
+         try {
+            nextPage.setOnClickListener {
+               val password = password.text.toString()
+               val phone = phoneNumber.text.toString()
+               if (password.isNotEmpty() && phone.isNotEmpty()) {
+                  lifecycleScope.launch {
+                     viewModel.isLogin(phone, password)
+                  }
+               } else {
+                  Toast.makeText(requireContext(), "Login ya Parol qate", Toast.LENGTH_SHORT).show()
+               }
+            }
+         } catch (e: Exception){
+            e.printStackTrace()
          }
       }
    }
-
    private fun initObservers() {
       viewModel.getLoginFlow.onEach {
          LocalStorage().token = it
          LocalStorage().isLogin = true
          findNavController().navigate(
-            R.id.action_firstFragment_to_secondFragment
+            FirstFragmentDirections.actionFirstFragmentToSecondFragment()
          )
-         Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
       }.launchIn(lifecycleScope)
-
-
    }
 }
